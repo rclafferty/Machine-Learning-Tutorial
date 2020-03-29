@@ -33,4 +33,59 @@ regressor.fit(X_train, y_train)
 
 # Predicting the Test Set Results
 y_pred = regressor.predict(X_test)
-y_diff = y_pred - y_test
+
+# Building the optimal model using Backward Elimination
+import statsmodels.formula.api as sm
+X = np.append(arr = np.ones((50, 1)).astype(int), values = X, axis = 1) # Append column of 1s to the BEGINNING Of X
+X_opt = X[:, [0, 1, 2, 3, 4, 5]]
+
+"""X_opt = X[:, [0, 1, 2, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+X_opt = X[:, [0, 1, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+X_opt = X[:, [0, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+X_opt = X[:, [0, 3, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+X_opt = X[:, [0, 3]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+X_opt = X[:, [0, 1, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+X_opt = X[:, [0, 3, 4, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+X_opt = X[:, [0, 3, 5]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()
+
+X_opt = X[:, [0, 3]]
+regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+regressor_OLS.summary()"""
+
+# Simplify the above statements into a for loop
+significance_level = 0.05
+numVars = len(X_opt[0])
+for i in range(0, 5):
+    regressor_OLS = sm.OLS(endog = y, exog = X_opt).fit()
+    maxVar = max(regressor_OLS.pvalues).astype(float)
+    if maxVar > significance_level:
+        for j in range(0, numVars - i):
+            if (regressor_OLS.pvalues[j].astype(float) == maxVar):
+                X_opt = np.delete(X_opt, j, 1)
+                
+regressor_OLS.summary()
