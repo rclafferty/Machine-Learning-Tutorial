@@ -27,7 +27,7 @@ svr_regressor = SVR(kernel = 'rbf')
 svr_regressor.fit(X, y)
 
 # Predicting a new result
-y_pred = svr_regressor.predict(sc_X.transform([[6.5]]))
+y_pred = sc_y.inverse_transform(svr_regressor.predict(sc_X.transform(np.array([[6.5]]))))
 
 # Visualising the SVR results (for higher resolution and smoother curve)
 X_grid = np.arange(min(X), max(X), 0.1)
