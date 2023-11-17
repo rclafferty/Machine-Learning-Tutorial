@@ -39,3 +39,8 @@ print(np.concatenate((predict_test.reshape(len(predict_test), 1), dependent_test
 print(regressor.predict([[1, 0, 0, 160000, 130000, 300000]]))
 print(regressor.coef_)
 print(regressor.intercept_)
+
+# Evaluating the performance of the model #
+from sklearn.metrics import r2_score
+score = r2_score(dependent_test, predict_test)
+print(f'Score: {score:.2f}')
